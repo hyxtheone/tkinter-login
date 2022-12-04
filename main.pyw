@@ -1,4 +1,5 @@
 import os
+import sys
 from tkinter import ttk
 from ttkthemes import themed_tk as tk
 from PIL import Image, ImageTk
@@ -55,6 +56,21 @@ def criptografar(user, password):
 
 
 janela = tk.ThemedTk()
+
+try:
+    db = open('db.txt', 'r')
+    db.close()
+except FileNotFoundError:
+    db = open('db.txt', 'a')
+    db.write('\n')
+    db.close()
+    try:
+        janela.destroy()
+        os.startfile('main.pyw')
+    except FileNotFoundError:
+        os.execl(sys.executable, sys.executable, *sys.argv)
+
+
 janela.title('Login/Registo')
 janela.geometry('275x150')
 janela.resizable(False, False)
@@ -87,15 +103,5 @@ login_button.grid(column=1, row=4, sticky='E', padx=5, pady=5)
 
 resultado = ttk.Label(janela, text='')
 resultado.grid(column=0, row=0, padx=3, pady=5)
-
-try:
-    db = open('db.txt', 'r')
-    db.close()
-except FileNotFoundError:
-    db = open('db.txt', 'a')
-    db.write('\n')
-    db.close()
-    janela.destroy()
-    os.startfile('main.pyw')
 
 janela.mainloop()
