@@ -34,17 +34,16 @@ def register():
     dbr = open('db.txt', 'r')
     password = senha.get()
     user = login.get()
-    for line in dbr:
-        if user + ':' + password == ':' or user + ':' + password == user + ':' or user + ':' + password == ':' + password:
-            resultado['text'] = 'Digite um login válido!'
-        elif user in line:
-            resultado['text'] = 'Esse usuário já existe!'
-        elif user + ':' + password not in line:
-            dba.write('\n' + user + ':' + password)
-            dba.write('\n' + user)
-            resultado['text'] = 'Registrado com sucesso!'
-        else:
-            resultado['text'] = 'Esse login já existe!'
+    if user + ':' + password == ':' or user + ':' + password == user + ':' or user + ':' + password == ':' + password:
+        resultado['text'] = 'Digite um login válido!'
+    elif user in dbr:
+        resultado['text'] = 'Esse usuário já existe!'
+    elif user + ':' + password not in dbr:
+        dba.write('\n' + user + ':' + password)
+        dba.write('\n' + user)
+        resultado['text'] = 'Registrado com sucesso!'
+    else:
+        resultado['text'] = 'Esse login já existe!'
     dba.close()
     dbr.close()
 
