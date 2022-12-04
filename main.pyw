@@ -2,6 +2,7 @@ import os
 from tkinter import ttk
 from ttkthemes import themed_tk as tk
 from PIL import Image, ImageTk
+from hashlib import sha256
 
 
 def logar():
@@ -11,7 +12,7 @@ def logar():
     for line in dbr:
         if user + ':' + password == ':' or user + ':' + password == user + ':' or user + ':' + password == ':' + password:
             resultado['text'] = 'Digite um login válido!'
-        elif user + ':' + password in line:
+        elif criptografar(user, password) in line:
             resultado['text'] = 'Login aprovado'
             janela.destroy()
 
@@ -36,16 +37,21 @@ def register():
     user = login.get()
     if user + ':' + password == ':' or user + ':' + password == user + ':' or user + ':' + password == ':' + password:
         resultado['text'] = 'Digite um login válido!'
-    elif user in dbr:
-        resultado['text'] = 'Esse usuário já existe!'
-    elif user + ':' + password not in dbr:
-        dba.write('\n' + user + ':' + password)
-        dba.write('\n' + user)
-        resultado['text'] = 'Registrado com sucesso!'
     else:
-        resultado['text'] = 'Esse login já existe!'
+        if criptografar(user, '') in dbr:
+            resultado['text'] = 'Esse usuário já existe!'
+        else:
+            resultado['text'] = 'Registrado com sucesso!'
+            dba.write('\n' + criptografar(user, password))
+            dba.write('\n' + criptografar(user, ''))
     dba.close()
     dbr.close()
+
+
+def criptografar(user, password):
+    senha_final = user + ':' + password
+    hash_senha_final = sha256(senha_final.encode())
+    return hash_senha_final.hexdigest()
 
 
 janela = tk.ThemedTk()
