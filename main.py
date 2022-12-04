@@ -34,8 +34,11 @@ def register():
     user = login.get()
     if user + ':' + password == ':' or user + ':' + password == user + ':' or user + ':' + password == ':' + password:
         resultado['text'] = 'Digite um login válido!'
+    elif user in dbr:
+        resultado['text'] = 'Esse usuário já existe!'
     elif user + ':' + password not in dbr:
         db.write('\n' + user + ':' + password)
+        db.write('\n' + user)
         resultado['text'] = 'Registrado com sucesso!'
     else:
         resultado['text'] = 'Esse login já existe!'
